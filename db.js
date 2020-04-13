@@ -7,7 +7,8 @@ module.exports = {
   getUser,
   addUser,
   updateUser,
-  getActivities
+  getActivities,
+  addActivity
 }
 
 function getUsers (db = connection) {
@@ -34,4 +35,11 @@ function getActivities (id, db = connection) {
     .join('users', 'users.id', 'activities.user_id')
     .where('users.id', id)
     .select('users.id as userId', 'activities.id as activityId', 'users.name as userName', 'activities.name as activityName', 'activities.frequency', 'activities.level')
+}
+
+function addActivity (data, db = connection) {
+  const { userId, ...rest } = data
+  return db('activities')
+    .insert({ user_id: userId, ...rest })
+    .then(() => getActivities(userId))
 }
