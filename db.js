@@ -8,7 +8,8 @@ module.exports = {
   addUser,
   updateUser,
   getActivities,
-  addActivity
+  addActivity,
+  updateActivity
 }
 
 function getUsers (db = connection) {
@@ -42,4 +43,16 @@ function addActivity (data, db = connection) {
   return db('activities')
     .insert({ user_id: userId, ...rest })
     .then(() => getActivities(userId))
+}
+
+function updateActivity (id, data, db = connection) {
+  return db('activities')
+    .where('id', id)
+    .update(data)
+    .then(() => {
+      return db('activities')
+        .where('id', id)
+        .select()
+        .first()
+    })
 }
