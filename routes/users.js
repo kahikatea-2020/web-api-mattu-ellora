@@ -27,12 +27,17 @@ router.get('/:id', (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const user = await db.addUser(req.body)
-    res.json({ id: user[0], ...req.body })
+    const id = await db.addUser(req.body)
+    res.json({ id: id[0], ...req.body })
   } catch (err) {
     console.log(err)
     res.send('Error in adding user')
   }
+})
+
+router.put('/', (req, res) => {
+  db.updateUser(req.body)
+    .then(user => res.json(user))
 })
 
 module.exports = router
