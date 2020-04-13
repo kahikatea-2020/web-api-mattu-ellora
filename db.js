@@ -9,7 +9,8 @@ module.exports = {
   updateUser,
   getActivities,
   addActivity,
-  updateActivity
+  updateActivity,
+  deleteActivity
 }
 
 function getUsers (db = connection) {
@@ -55,4 +56,10 @@ function updateActivity (id, data, db = connection) {
         .select()
         .first()
     })
+}
+
+function deleteActivity (id, db = connection) {
+  return db('activities')
+    .where('id', id)
+    .del()
 }

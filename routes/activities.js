@@ -24,4 +24,11 @@ router.put('/:activityId', (req, res) => {
     .then(activity => res.json(activity))
 })
 
+// DELETE /activities/:activityId
+router.delete('/:activityId', (req, res) => {
+  const id = req.params.activityId
+  db.deleteActivity(id)
+    .then(() => res.send(`Activity id ${id} has been successfully deleted!`))
+})
+
 module.exports = router
