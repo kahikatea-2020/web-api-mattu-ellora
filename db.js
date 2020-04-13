@@ -6,7 +6,8 @@ module.exports = {
   getUsers,
   getUser,
   addUser,
-  updateUser
+  updateUser,
+  getActivities
 }
 
 function getUsers (db = connection) {
@@ -26,4 +27,11 @@ function updateUser (data, db = connection) {
     .where('id', data.id)
     .update({ name: data.name, email: data.email })
     .then(() => db('users').where('id', data.id).select().first())
+}
+
+function getActivities (id, db = connection) {
+  return db('activities')
+    .join('users', 'users.id', 'activities.user_id')
+    .where('users.id', id)
+    .select('users.id as userId', 'activities.id as activityId', 'users.name as userName', 'activities.name as activityName', 'activities.frequency', 'activities.level')
 }
